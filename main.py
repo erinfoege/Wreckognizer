@@ -1,16 +1,10 @@
-import kagglehub
-from kagglehub import KaggleDatasetAdapter
+import pandas as pd
 
-# Set the path to the file you'd like to load
-file_path = ""
+file_path = "data/US_Accidents_March23.csv";
 
-# Load the latest version
-df = kagglehub.load_dataset(
-  KaggleDatasetAdapter.PANDAS,
-  "sobhanmoosavi/us-accidents",
-  file_path,
-  # Provide any additional arguments like 
-  # sql_query or pandas_kwargs. See the 
-  # documenation for more information:
-  # https://github.com/Kaggle/kagglehub/blob/main/README.md#kaggledatasetadapterpandas
-)
+# Read first 100,000 rows
+df = pd.read_csv(file_path, usecols=['ID', 'Severity', 'Start_Lat', 'Start_Lng'],
+    nrows=100000)
+
+print(df.head())
+
