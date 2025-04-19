@@ -25,12 +25,6 @@ file_path = "data/US_Accidents_2022_and_up.zip"
 # df of ID  Severity, Start_Lat, Start_Long, City, State, Zipcode
 df = pd.read_csv(file_path)
 
-test_data = [
-    {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
-    {'ID': 2, 'Start_Lat': 29.0003, 'Start_Long': -81.066, 'Severity': 2, 'City': 'Orlando', 'State': 'FL', 'Zipcode': '32801'},
-    {'ID': 3, 'Start_Lat': 29.0004, 'Start_Long': -81.067, 'Severity': 1, 'City': 'Jacksonville', 'State': 'FL', 'Zipcode': '32202'}
-]
-
 root = None
 for index, row in df.iterrows():
     point = (row['Start_Lat'], row['Start_Lng'])
@@ -46,3 +40,22 @@ for index, row in df.iterrows():
 
 print_tree(root)
 
+test_data = [
+    {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
+    {'ID': 2, 'Start_Lat': 29.0003, 'Start_Long': -81.066, 'Severity': 2, 'City': 'Orlando', 'State': 'FL', 'Zipcode': '32801'},
+    {'ID': 3, 'Start_Lat': 29.0004, 'Start_Long': -81.067, 'Severity': 1, 'City': 'Jacksonville', 'State': 'FL', 'Zipcode': '32202'}
+]
+
+# root = None
+# for item in test_data:
+#     point = (item['Start_Lat'], item['Start_Long'])
+#     data = {
+#         'ID': item['ID'],
+#         'Severity': item['Severity'],
+#         'City': item['City'],
+#         'State': item['State'],
+#         'Zipcode': item['Zipcode']
+#     }
+#     root = insert_rec(root, point, data)
+#
+# print_tree(root)
