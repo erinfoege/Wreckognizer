@@ -52,3 +52,34 @@ def haversine_dist(point1, point2):
 
     # calculate the result
     return (c * r)
+
+
+def bfs_with_pruning(root, search_center, radius):
+    if not root:
+        return []
+
+    results = []
+    queue = [(root, 0)]  # Each item is a tuple (node, depth)
+
+    while queue:
+        current_node, depth = queue.pop(0)
+
+        # Calculate the distance to the search center
+        distance = haversine_dist(search_center, current_node.point)
+
+        # If within radius, add to results
+        if distance <= radius:
+            results.append(current_node.data)
+
+        # Determine splitting axis (latitude or longitude)
+        cd = depth % 2
+
+        # Prune: Check which child nodes to explore
+        if current_node.left and (search_center[cd] - radius) <= current_node.point[cd]:
+            queue.append((current_node.left, depth + 1))
+
+        if current_node.right and (search_center[cd] + radius) >= current_node.point[cd]:
+            queue.append((current_node.right, depth + 1))
+
+    return results
+

@@ -1,5 +1,5 @@
 import pandas as pd
-from kdTree import insert_rec, print_tree
+from kdTree import insert_rec, print_tree, bfs_with_pruning
 
 # file_path = "US_Accidents_March23.csv"
 # df2 = pd.read_csv(file_path, usecols=['ID', 'Severity', 'Start_Time', 'Start_Lat', 'Start_Lng', 'City', 'State', 'Zipcode'])
@@ -15,10 +15,6 @@ from kdTree import insert_rec, print_tree
 # df_filtered.to_csv(output_file, index=False)
 #
 #
-
-
-
-
 
 file_path = "data/US_Accidents_2022_and_up.zip"
 
@@ -39,6 +35,16 @@ for index, row in df.iterrows():
 
 
 print_tree(root)
+
+search_center = (29.6520, -82.3250)
+radius = 5  # Radius in miles
+
+results = bfs_with_pruning(root, search_center, radius)
+
+print(f"Accidents within {radius} miles of {search_center}:")
+for result in results:
+    print(result)
+    print("hi")
 
 test_data = [
     {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
