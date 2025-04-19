@@ -1,22 +1,22 @@
 import pandas as pd
-from kdTree import insert_rec, print_tree, bfs_with_pruning
+from kdTree import insert_rec, print_tree, bfs_with_pruning, dfs_with_pruning
 
 # file_path = "US_Accidents_March23.csv"
 # df2 = pd.read_csv(file_path, usecols=['ID', 'Severity', 'Start_Time', 'Start_Lat', 'Start_Lng', 'City', 'State', 'Zipcode'])
 #
-# # Convert 'Start_Time' to datetime format
+# # convert 'Start_Time' to datetime format
 # df2['Start_Time'] = pd.to_datetime(df2['Start_Time'], errors='coerce')
 #
-# # Filter the data for records starting from 2022 and onward
+# # filter the data for records starting from 2022
 # df_filtered = df2[df2['Start_Time'].dt.year >= 2022]
 #
-# # Save the filtered data to a new CSV file
+# # save the filtered data to a new CSV file
 # output_file = "data/US_Accidents_2022_and_up.csv"
 # df_filtered.to_csv(output_file, index=False)
 #
 #
 
-file_path = "data/US_Accidents_2022_and_up.zip"
+file_path = "data/US_Accidents_2022_and_up_FL.zip"
 
 # df of ID  Severity, Start_Lat, Start_Long, City, State, Zipcode
 df = pd.read_csv(file_path)
@@ -33,18 +33,25 @@ for index, row in df.iterrows():
     }
     root = insert_rec(root, point, data)
 
+#print_tree(root)
 
-print_tree(root)
+#search_center = (29.6520, -82.3250) #gainesville coords
+search_center = (26.1004, -80.3998) #weston coords
 
-search_center = (29.6520, -82.3250)
-radius = 5  # Radius in miles
+radius = 2  # radius in miles
 
-results = bfs_with_pruning(root, search_center, radius)
+resultsBFS = bfs_with_pruning(root, search_center, radius)
+resultsDFS = dfs_with_pruning(root, search_center, radius)
 
-print(f"Accidents within {radius} miles of {search_center}:")
-for result in results:
+print(f"BFS Accidents within {radius} miles of {search_center}:")
+for result in resultsBFS:
     print(result)
-    print("hi")
+print("BFS Total:", len(resultsBFS), "\n")
+
+print(f"DFS Accidents within {radius} miles of {search_center}:")
+for result in resultsDFS:
+    print(result)
+print("DFS Total:", len(resultsDFS))
 
 test_data = [
     {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
