@@ -1,4 +1,5 @@
 from math import radians, cos, sin, asin, sqrt
+import time
 
 class Accident:
     def __init__(self, point, data):
@@ -31,6 +32,28 @@ def print_tree(root, depth=0):
 
     print_tree(root.left, depth + 1)
     print_tree(root.right, depth + 1)
+
+def initialize_searches(root, search_location, radius):
+    start = time.perf_counter()
+    resultsBFS = bfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    bfs_time = end - start
+
+    start = time.perf_counter()
+    resultsDFS = dfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    dfs_time = end - start
+
+    print(f"BFS Accidents within {radius} miles of {search_location}:")
+    #for result in resultsBFS:
+    #    print(result)
+    print("BFS Total:", len(resultsBFS), f" in {bfs_time} seconds \n")
+
+    print(f"DFS Accidents within {radius} miles of {search_location}:")
+    #for result in resultsDFS:
+    #    print(result)
+    print("DFS Total:", len(resultsDFS), f" in {dfs_time} seconds \n")
+
 
 def haversine_dist(point1, point2):
     lat1 = radians(point1[0])
@@ -70,10 +93,10 @@ def bfs_with_pruning(root, search_center, radius):
         cd = depth % 2
 
         # pruning where left and right children are explored only if within current dimension
-        if current_node.left and (search_center[cd] - radius) <= current_node.point[cd]:
+        if current_node.left: # and (search_center[cd] - radius) <= current_node.point[cd]:
             queue.append((current_node.left, depth + 1))
 
-        if current_node.right and (search_center[cd] + radius) >= current_node.point[cd]:
+        if current_node.right: # and (search_center[cd] + radius) >= current_node.point[cd]:
             queue.append((current_node.right, depth + 1))
 
     return results
@@ -103,3 +126,4 @@ def dfs_with_pruning(node, search_center, radius, depth=0, results=None):
         dfs_with_pruning(node.right, search_center, radius, depth + 1, results)
 
     return results
+

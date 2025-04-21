@@ -1,5 +1,5 @@
 import pandas as pd
-from kdTree import insert_rec, print_tree, bfs_with_pruning, dfs_with_pruning
+from kdTree import insert_rec, initialize_searches
 
 # file_path = "US_Accidents_March23.csv"
 # df2 = pd.read_csv(file_path, usecols=['ID', 'Severity', 'Start_Time', 'Start_Lat', 'Start_Lng', 'City', 'State', 'Zipcode'])
@@ -22,6 +22,7 @@ file_path = "data/US_Accidents_2022_and_up_FL.zip"
 df = pd.read_csv(file_path)
 
 root = None
+count = 0
 for index, row in df.iterrows():
     point = (row['Start_Lat'], row['Start_Lng'])
     data = {
@@ -32,26 +33,18 @@ for index, row in df.iterrows():
         'Zipcode': row['Zipcode']
     }
     root = insert_rec(root, point, data)
+    if count == 200000:
+        break
+    count = count + 1
 
 #print_tree(root)
 
-#search_center = (29.6520, -82.3250) #gainesville coords
-search_center = (26.1004, -80.3998) #weston coords
+search_center = (29.6520, -82.3250) #gainesville coords
+#search_center = (26.1004, -80.3998) #weston coords
 
-radius = 2  # radius in miles
+radius = 100  # radius in miles
 
-resultsBFS = bfs_with_pruning(root, search_center, radius)
-resultsDFS = dfs_with_pruning(root, search_center, radius)
-
-print(f"BFS Accidents within {radius} miles of {search_center}:")
-for result in resultsBFS:
-    print(result)
-print("BFS Total:", len(resultsBFS), "\n")
-
-print(f"DFS Accidents within {radius} miles of {search_center}:")
-for result in resultsDFS:
-    print(result)
-print("DFS Total:", len(resultsDFS))
+initialize_searches(root, search_center, radius)
 
 test_data = [
     {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
