@@ -1,5 +1,6 @@
 import pandas as pd
 from kdTree import insert_rec, initialize_searches
+from quadTree import insert_quad, quad_search
 
 # file_path = "US_Accidents_March23.csv"
 # df2 = pd.read_csv(file_path, usecols=['ID', 'Severity', 'Start_Time', 'Start_Lat', 'Start_Lng', 'City', 'State', 'Zipcode'])
@@ -22,6 +23,7 @@ file_path = "data/US_Accidents_2022_and_up_FL.zip"
 df = pd.read_csv(file_path)
 
 root = None
+quad_root = None
 count = 0
 for index, row in df.iterrows():
     point = (row['Start_Lat'], row['Start_Lng'])
@@ -33,24 +35,18 @@ for index, row in df.iterrows():
         'Zipcode': row['Zipcode']
     }
     root = insert_rec(root, point, data)
+    quad_root = insert_quad(quad_root, point, data)
     if count == 200000:
         break
     count = count + 1
 
 #print_tree(root)
-
 search_center = (29.6520, -82.3250) #gainesville coords
 #search_center = (26.1004, -80.3998) #weston coords
 
 radius = 100  # radius in miles
-
 initialize_searches(root, search_center, radius)
-
-test_data = [
-    {'ID': 1, 'Start_Lat': 29.0002, 'Start_Long': -81.065, 'Severity': 3, 'City': 'Daytona Beach', 'State': 'FL', 'Zipcode': '32118'},
-    {'ID': 2, 'Start_Lat': 29.0003, 'Start_Long': -81.066, 'Severity': 2, 'City': 'Orlando', 'State': 'FL', 'Zipcode': '32801'},
-    {'ID': 3, 'Start_Lat': 29.0004, 'Start_Long': -81.067, 'Severity': 1, 'City': 'Jacksonville', 'State': 'FL', 'Zipcode': '32202'}
-]
+quad_search(quad_root, search_center, radius)
 
 # root = None
 # for item in test_data:
