@@ -45,6 +45,7 @@ def insert_quad(node, point, data):
 
     return node
 
+# dfs structured search
 def radius_search_quad(node, center, radius, results=None):
     if node is None:
         return results if results else []
@@ -82,4 +83,5 @@ def quad_search(root, search_location, radius):
 
     print(f"QuadTree Accidents within {radius} miles of {search_location}:")
     print("Quad Total:", len(resultsQuad), f" in {quadTime} seconds\n")
+    return resultsQuad
 
