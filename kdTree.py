@@ -1,4 +1,5 @@
 from math import radians, cos, sin, asin, sqrt
+import time
 
 class Accident:
     def __init__(self, point, data):
@@ -7,12 +8,11 @@ class Accident:
         self.left = None
         self.right = None
 
-
 def insert_rec(root, point, data, depth=0):
     if not root:
         return Accident(point, data)
 
-    # Alternate between latitude (0) and longitude (1)
+    # alternate between latitude (0) and longitude (1)
     cd = depth % 2
 
     if point[cd] < root.point[cd]:
@@ -26,13 +26,33 @@ def print_tree(root, depth=0):
     if not root:
         return
 
-    # Print current node with its depth
     print(f"{'  ' * depth}Node at depth {depth}: (Lat: {root.point[0]}, Long: {root.point[1]})")
     print(f"{'  ' * depth}Data: {root.data}")
 
-    # Recursively print left and right subtrees
     print_tree(root.left, depth + 1)
     print_tree(root.right, depth + 1)
+
+def initialize_searches(root, search_location, radius):
+    start = time.perf_counter()
+    resultsBFS = bfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    bfs_time = end - start
+
+    start = time.perf_counter()
+    resultsDFS = dfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    dfs_time = end - start
+
+    print(f"BFS Accidents within {radius} miles of {search_location}:")
+    #for result in resultsBFS:
+    #    print(result)
+    print("BFS Total:", len(resultsBFS), f" in {bfs_time} seconds \n")
+
+    print(f"DFS Accidents within {radius} miles of {search_location}:")
+    #for result in resultsDFS:
+    #    print(result)
+    print("DFS Total:", len(resultsDFS), f" in {dfs_time} seconds \n")
+
 
 def haversine_dist(point1, point2):
     lat1 = radians(point1[0])
@@ -40,46 +60,69 @@ def haversine_dist(point1, point2):
     long1 = radians(point1[1])
     long2 = radians(point2[1])
 
-    # Haversine formula (from web, how to calc distance on Earth)
     dlong = long2 - long1
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlong / 2) ** 2
 
     c = 2 * asin(sqrt(a))
 
-    # Radius of earth in miles
+    # radius of earth in miles
     r = 3956
 
-    # calculate the result
     return (c * r)
 
 
 def bfs_with_pruning(root, search_center, radius):
-    if not root:
+    if not root: #if root doesn't exist
         return []
 
     results = []
-    queue = [(root, 0)]  # Each item is a tuple (node, depth)
+    queue = [(root, 0)]  # item is tuple: (node, depth)
 
-    while queue:
+    while queue: # queue is not empty
         current_node, depth = queue.pop(0)
 
-        # Calculate the distance to the search center
+        # distance to search center calculated
         distance = haversine_dist(search_center, current_node.point)
 
-        # If within radius, add to results
-        if distance <= radius:
+        if distance <= radius: # add to results if within radius
             results.append(current_node.data)
 
-        # Determine splitting axis (latitude or longitude)
+        # k=2, so cuts dimension between 0 for latitude and 1 for longitude
         cd = depth % 2
 
-        # Prune: Check which child nodes to explore
-        if current_node.left and (search_center[cd] - radius) <= current_node.point[cd]:
+        # pruning where left and right children are explored only if within current dimension
+        if current_node.left: # and (search_center[cd] - radius) <= current_node.point[cd]:
             queue.append((current_node.left, depth + 1))
 
-        if current_node.right and (search_center[cd] + radius) >= current_node.point[cd]:
+        if current_node.right: # and (search_center[cd] + radius) >= current_node.point[cd]:
             queue.append((current_node.right, depth + 1))
+
+    return results
+
+
+def dfs_with_pruning(node, search_center, radius, depth=0, results=None):
+    if node is None:  #if root doesn't exist
+        return
+
+    if results is None:
+        results = []
+
+    # distance to search center calculated
+    distance = haversine_dist(search_center, node.point)
+
+    if distance <= radius: # add to results if within radius
+        results.append(node.data)
+
+    # k=2, so cuts dimension between 0 for latitude and 1 for longitude
+    cd = depth % 2
+
+    # pruning where left and right children are explored only if within current dimension
+    if node.left and (search_center[cd] - radius) <= node.point[cd]:
+        dfs_with_pruning(node.left, search_center, radius, depth + 1, results)
+
+    if node.right and (search_center[cd] + radius) >= node.point[cd]:
+        dfs_with_pruning(node.right, search_center, radius, depth + 1, results)
 
     return results
 
