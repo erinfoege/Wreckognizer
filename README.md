@@ -1,10 +1,11 @@
 # Wreckognizer
-Implementation of a Quad Tree and K-D tree that compares the search algorithms of accidents in a specified radius to the user's selected location. 
+Implementation of a Quad Tree and K-D tree that compares the search algorithms of accidents in a specified radius to the user's selected location. The program displays the crashes as clickable dots on the map that can be clicked to see their severity.
 
-This program runs on the dependencies Folium and Flask
+This program runs on the dependencies Folium and Flask.
 
 pip install Flask
 pip install folium
 
-Run interface.py to start the program.
+Run interface.py to start the program. The code has a prebuilt tree, to make running the program quicker, but if you'd like to build the tree from scratch you can uncomment line 11 in init_tree.py.  
 
+To use the program, select a radius for the circle from the slider and select which tree search type you would like to test. You can either search a location/address or just zoom in to some place in the contiguous US. Click a location, and then press the "Submit Radius" button. All crashes in that radius will be shown on screen. The crash circles are clickable and show the latitude, longitude, and severity of the crash.
