@@ -1,13 +1,6 @@
 import folium
 from folium.plugins import Geocoder
 
-crash_examples = [
-    [42.58544425738491, -104.87548828125001, 3],
-    [29.650763783036968, -82.32433319091797, 1],
-    [40.712776, -74.005974, 2],
-    [34.052235, -118.243683, 1]
-]
-
 def make_gui():
     # makes the map and center it at the center of the US
     map_center = [39.8283, -98.5795]
@@ -67,7 +60,7 @@ def make_gui():
         let storedLng = null;
         let storedRadius = null;
         let circle = null;
-        let crashSquares = [];
+        let CrashDots = [];
 
         function addClickCircle(map) {{
             map.on('click', function(e) {{
@@ -116,17 +109,10 @@ def make_gui():
                     .then(res => res.json())
                     .then(data => {{
                         // removes old squares
-                        crashSquares.forEach(rect => map.removeLayer(rect));
-                        crashSquares = [];
+                        CrashDots.forEach(rect => map.removeLayer(rect));
+                        CrashDots = [];
 
                         data.crashes.forEach(crash => {{
-                            let size = 0.05;
-                            let bounds = [
-                                [crash.lat - size/2, crash.lon - size/2],
-                                [crash.lat + size/2, crash.lon + size/2]
-                            ];
-
-                            // change the colors
                             let color = {{
                                 1: "#00cc00",
                                 2: "#ffcc00",
@@ -134,13 +120,15 @@ def make_gui():
                                 4: "#800000"
                             }}[crash.severity];
 
-                            let rect = L.rectangle(bounds, {{
+                            let circle = L.circleMarker([crash.lat, crash.lon], {{
+                                radius: 5,
                                 color: color,
-                                weight: 1,
-                                fillOpacity: 0.8
+                                fillColor: color,
+                                fillOpacity: 0.7,
+                                weight: 1
                             }}).addTo(map).bindPopup(`Severity: ${{crash.severity}}<br>Lat: ${{crash.lat.toFixed(4)}}<br>Lon: ${{crash.lon.toFixed(4)}}`);
 
-                            crashSquares.push(rect);
+                            CrashDots.push(circle);
                         }});
                     }});
                 }}
@@ -150,4 +138,5 @@ def make_gui():
     """
 
     m.get_root().html.add_child(folium.Element(custom_html))
+    m.get_root().script.add_child(folium.Element(f"window.{m.get_name()} = {m.get_name()};"))
     m.save("radius_picker_map.html")
