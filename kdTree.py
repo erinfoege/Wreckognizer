@@ -53,6 +53,29 @@ def initialize_searches(root, search_location, radius):
     #    print(result)
     print("DFS Total:", len(resultsDFS), f" in {dfs_time} seconds \n")
 
+def bfs_search(root, search_location, radius):
+    start = time.perf_counter()
+    resultsBFS = bfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    bfs_time = end - start
+    print(f"BFS Accidents within {radius} miles of {search_location}:")
+    # for result in resultsBFS:
+    #    print(result)
+    print("BFS Total:", len(resultsBFS), f" in {bfs_time} seconds \n")
+    return resultsBFS
+
+def dfs_search(root, search_location, radius):
+    start = time.perf_counter()
+    resultsDFS = dfs_with_pruning(root, search_location, radius)
+    end = time.perf_counter()
+    dfs_time = end - start
+
+    print(f"DFS Accidents within {radius} miles of {search_location}:")
+    #for result in resultsDFS:
+    #    print(result)
+    print("DFS Total:", len(resultsDFS), f" in {dfs_time} seconds \n")
+    return resultsDFS
+
 
 def haversine_dist(point1, point2):
     lat1 = radians(point1[0])
