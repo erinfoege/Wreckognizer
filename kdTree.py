@@ -109,7 +109,7 @@ def bfs_with_pruning(root, search_center, radius):
         distance = haversine_dist(search_center, current_node.point)
 
         if distance <= radius: # add to results if within radius
-            results.append(current_node.data)
+            results.append(current_node)
 
         # k=2, so cuts dimension between 0 for latitude and 1 for longitude
         cd = depth % 2
@@ -135,7 +135,7 @@ def dfs_with_pruning(node, search_center, radius, depth=0, results=None):
     distance = haversine_dist(search_center, node.point)
 
     if distance <= radius: # add to results if within radius
-        results.append(node.data)
+        results.append(node)
 
     # k=2, so cuts dimension between 0 for latitude and 1 for longitude
     cd = depth % 2

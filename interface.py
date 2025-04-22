@@ -7,6 +7,7 @@ from kdTree import insert_rec, bfs_search, dfs_search
 from quadTree import insert_quad, quad_search
 from init_tree import build_trees
 
+
 kd_root, quad_root = build_trees()
 
 site = Flask(__name__)
@@ -16,6 +17,7 @@ def map():
     with open("radius_picker_map.html") as f:
         return render_template_string(f.read())
 
+print(kd_root.point)
 @site.route("/log", methods=["POST"])
 def log():
     data = request.json
@@ -25,7 +27,7 @@ def log():
     search_type = data["search_type"]
 
     center = (lat, lon)
-    
+
     if search_type == "kd_dfs":
         results = dfs_search(kd_root, center, radius)
     elif search_type == "quad":
@@ -37,9 +39,9 @@ def log():
     formatted = []
     for crash in results:
         formatted.append({
-            "lat": float(crash["Lat"]) if "Lat" in crash else float(crash["lat"]) if "lat" in crash else lat,
-            "lon": float(crash["Long"]) if "Long" in crash else float(crash["lon"]) if "lon" in crash else lon,
-            "severity": int(crash["Severity"])
+            "lat": float(crash.point[0]),
+            "lon": float(crash.point[1]),
+            "severity": int(crash.data["Severity"])
         })
 
     return {"crashes": formatted}

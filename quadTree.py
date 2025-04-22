@@ -54,7 +54,7 @@ def radius_search_quad(node, center, radius, results=None):
         results = []
 
     if haversine_dist(center, node.point) <= radius: #using haversine for distance on Earth
-        results.append(node.data)
+        results.append(node)
 
     def region_might_intersect(bounds, center, radius):
         min_lat, max_lat, min_long, max_long = bounds

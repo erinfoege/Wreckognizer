@@ -30,7 +30,7 @@ def build_trees():
             'Severity': row['Severity'],
             'City': row['City'],
             'State': row['State'],
-            'Zipcode': row['Zipcode']
+            'Zipcode': row['Zipcode'],
         }
 
         kd_root = insert_rec(kd_root, point, data)
