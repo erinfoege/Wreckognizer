@@ -8,7 +8,6 @@ class Accident:
         self.left = None
         self.right = None
 
-
 def insert_rec(root, point, data, depth=0):
     if not root:
         return Accident(point, data)

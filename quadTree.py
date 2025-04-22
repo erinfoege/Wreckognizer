@@ -59,6 +59,7 @@ def radius_search_quad(node, center, radius, results=None):
         min_lat, max_lat, min_long, max_long = bounds
         lat, lng = center
 
+
         #clamp center to bounds to get closest point
         clamped_lat = max(min_lat, min(lat, max_lat))
         clamped_lng = max(min_long, min(lng, max_long))

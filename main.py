@@ -48,16 +48,3 @@ radius = 100  # radius in miles
 initialize_searches(root, search_center, radius)
 quad_search(quad_root, search_center, radius)
 
-# root = None
-# for item in test_data:
-#     point = (item['Start_Lat'], item['Start_Long'])
-#     data = {
-#         'ID': item['ID'],
-#         'Severity': item['Severity'],
-#         'City': item['City'],
-#         'State': item['State'],
-#         'Zipcode': item['Zipcode']
-#     }
-#     root = insert_rec(root, point, data)
-#
-# print_tree(root)
