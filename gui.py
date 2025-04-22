@@ -21,26 +21,52 @@ def make_gui():
             transition: background-color 0.25s;
             cursor: pointer;
         }}
+
         #submitBtn:hover {{
             background-color: #f8c8d8;
         }}
+
         #submitBtn:disabled {{
             background-color: gray;
-            color: #aaaaa;
+            color: white;
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.45;
         }}
+
         #radius-picker {{
             position: fixed;
-            top: 1.5vh;
+            top: 2vh;
             left: 4vw;
             z-index: 1000;
             box-shadow: 0 .63vw 1vw;
             border-radius: 0.6vw;
+            
             padding: 1.2vw;
-            background-color: white;
+            background-color: #ffe0eb;
+            border: 0.5vh solid #ff80aa;
+        }}
+
+        #title {{
+            position: fixed;
+            top: 1vh;
+            left: 42vw;
+            padding: 1vh 2vw;
+            border-radius: 1vw;
+            font-size: 2vw;
+
+            color: #b03060;
+            background-color: #ffe0eb;
+            border: 0.5vh solid #ff80aa;
+
+            font-weight: Bold;
+            z-index: 1000;
+            opacity: 0.85;
+            box-shadow: 0 0.3vw 0.8vw;
+            text-align: center;
         }}
     </style>
+
+    <div id="title">Wreckognizer!</div>
 
     <div id="radius-picker">
         <label>Radius (miles): <span id="radiusValue">10</span></label><br>

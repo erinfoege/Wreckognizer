@@ -17,7 +17,6 @@ def map():
     with open("radius_picker_map.html") as f:
         return render_template_string(f.read())
 
-print(kd_root.point)
 @site.route("/log", methods=["POST"])
 def log():
     data = request.json
